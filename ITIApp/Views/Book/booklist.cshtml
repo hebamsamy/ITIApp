@@ -1,0 +1,65 @@
+﻿@model List<Book>
+
+@{
+    Layout = "_UserLayout";
+    var temp = ViewData["Subjects"] as List<Subject>;
+}
+
+<h1>Our Book List</h1>
+
+@*   <select>
+
+  @foreach (var item in ViewBag.Subjects)
+  {
+      <option>@item.Name</option>
+  }
+  </select> *@
+
+<select>
+    @if(temp != null)
+    {
+        foreach (var item in temp)
+        {
+            <option>@item.Name</option>
+        }
+    }
+</select>
+<hr />
+
+<div class="row">
+    @foreach(Book book in Model)
+    {
+
+        <div class="card col-4">
+            <div class="card-body">
+                <h5 class="card-title">@book.Title</h5>
+                <p class="card-text">ISBN:  @book.Isbn</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Subject:  @book.Subject.Name</li>
+                <li class="list-group-item">Publisher: @book.Publisher.Name</li>
+                <li class="list-group-item">Price: @book.Price</li>
+            </ul>
+
+            
+            <div class="card-body">
+                <a 
+                    asp-controller= "book" 
+                    asp-action="GetDetails" 
+                    asp-route-id="@book.ID"  
+                    class="btn btn-info">See Detailes</a>
+                     <a 
+                    asp-controller= "book" 
+                    asp-action="edit" 
+                    asp-route-id="@book.ID"  
+                    class="btn btn-info">Edit</a>
+                <a asp-controller="book"
+                   asp-action="delete"
+                   asp-route-id="@book.ID"
+                   class="btn btn-info">Delete</a>
+            </div>
+        </div>
+    
+    }
+
+</div>

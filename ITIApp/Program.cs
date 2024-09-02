@@ -10,13 +10,13 @@ namespace ITIApp
 
             var app = builder.Build();
 
-            app.UseStaticFiles();
+            app.UseStaticFiles();//wwwroot
 
             app.UseRouting();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=account}/{action=login}/{id?}");
+                pattern: "{controller=home}/{action=index}/{id?}");
 
             app.Run();
 

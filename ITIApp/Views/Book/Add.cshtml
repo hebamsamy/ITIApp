@@ -1,0 +1,60 @@
+﻿@{
+    Layout = "_UserLayout";
+    List<SelectListItem> Publishers = ViewData["Publishers"] as List<SelectListItem>;
+    List<SelectListItem> Subjects = ViewData["Subjects"] as List<SelectListItem>;
+}
+@model AddBookViewModel;
+
+<h1>Add New Book</h1>
+
+<form asp-action="add" asp-controller="book" method="post">
+
+    <div class="mb-3">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control"/>
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Isbn"></label>
+        <input asp-for="Isbn" class="form-control" />
+        <span asp-validation-for="Isbn" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Summary"></label>
+        <input asp-for="Summary" class="form-control" />
+        <span asp-validation-for="Summary" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Notes"></label>
+        <input asp-for="Notes" class="form-control" />
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PageCount"></label>
+        <input asp-for="PageCount" class="form-control" />
+        <span asp-validation-for="PageCount" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PublicationDate"></label>
+        <input asp-for="PublicationDate" class="form-control" />
+        <span asp-validation-for="PublicationDate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PublisherId"></label>
+        <select  asp-for="PublisherId" asp-items="@Publishers" class="form-control" ></select>
+        <span asp-validation-for="PublisherId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="SubjectId"></label>
+        <select asp-for="SubjectId" asp-items="@Subjects" class="form-control"></select>
+        <span asp-validation-for="SubjectId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-outline-primary">Send Data</button>
+</form>
