@@ -5,7 +5,11 @@ VisualStudioVersion = 17.11.35219.272
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ITIApp", "ITIApp\ITIApp.csproj", "{42908CFC-ADEA-459C-A07D-463116EA6873}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{E612A078-5A15-4A7A-BA56-A5181690B012}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{E612A078-5A15-4A7A-BA56-A5181690B012}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Managers", "Managers\Managers.csproj", "{F941BFE9-9247-4A14-B768-F7C514998616}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModel", "ViewModel\ViewModel.csproj", "{DF85C509-286D-44C4-9B41-74EE47501A38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{E612A078-5A15-4A7A-BA56-A5181690B012}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E612A078-5A15-4A7A-BA56-A5181690B012}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E612A078-5A15-4A7A-BA56-A5181690B012}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F941BFE9-9247-4A14-B768-F7C514998616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F941BFE9-9247-4A14-B768-F7C514998616}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F941BFE9-9247-4A14-B768-F7C514998616}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F941BFE9-9247-4A14-B768-F7C514998616}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF85C509-286D-44C4-9B41-74EE47501A38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF85C509-286D-44C4-9B41-74EE47501A38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF85C509-286D-44C4-9B41-74EE47501A38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF85C509-286D-44C4-9B41-74EE47501A38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

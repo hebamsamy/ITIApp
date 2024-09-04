@@ -1,3 +1,7 @@
+using Managers;
+using Microsoft.EntityFrameworkCore;
+using Models;
+
 namespace ITIApp
 {
     public class Program
@@ -7,6 +11,19 @@ namespace ITIApp
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<ProjectContext>(i =>
+            {
+                i.UseLazyLoadingProxies()
+                .UseSqlServer(builder.Configuration.GetConnectionString("projectDb"));
+            }
+          );
+            builder.Services.AddScoped<BookManager>();
+            builder.Services.AddScoped<PuplisherManager>();
+            builder.Services.AddScoped<SubjectManager>();
+
+
+
 
             var app = builder.Build();
 

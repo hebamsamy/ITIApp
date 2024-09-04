@@ -1,8 +1,7 @@
-﻿@model List<Book>
+﻿@model List<BookViewModel>
 
 @{
     Layout = "_UserLayout";
-    var temp = ViewData["Subjects"] as List<Subject>;
 }
 
 <h1>Our Book List</h1>
@@ -15,19 +14,19 @@
   }
   </select> *@
 
-<select>
-    @if(temp != null)
-    {
-        foreach (var item in temp)
-        {
-            <option>@item.Name</option>
-        }
-    }
-</select>
+@*  <select>
+     @if(temp != null)
+     {
+         foreach (var item in temp)
+         {
+             <option>@item.Name</option>
+         }
+     }
+</select> *@
 <hr />
 
 <div class="row">
-    @foreach(Book book in Model)
+    @foreach(var book in Model)
     {
 
         <div class="card col-4">
@@ -36,8 +35,8 @@
                 <p class="card-text">ISBN:  @book.Isbn</p>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">Subject:  @book.Subject.Name</li>
-                <li class="list-group-item">Publisher: @book.Publisher.Name</li>
+                <li class="list-group-item">Subject:  @book.SubjectName</li>
+                <li class="list-group-item">Publisher: @book.PublisherName</li>
                 <li class="list-group-item">Price: @book.Price</li>
             </ul>
 

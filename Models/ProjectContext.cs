@@ -10,21 +10,21 @@ namespace Models
 {
     public class ProjectContext :DbContext
     {
-        public ProjectContext() : base()
+        public ProjectContext(DbContextOptions options) : base(options)
         {
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        { 
-            //for database
-            optionsBuilder.UseSqlServer("Data source = DESKTOP-0KJMNFC; Initial catalog = Project; Integrated security= true; trustservercertificate = true; MultipleActiveResultSets=true ");
-            //enable lazy loading
-            optionsBuilder.UseLazyLoadingProxies();
-            ////other options
-            //optionsBuilder.LogTo(log=>Debug.WriteLine(log));
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{ 
+        //    //for database
+        //    optionsBuilder.UseSqlServer("Data source = DESKTOP-0KJMNFC; Initial catalog = Project; Integrated security= true; trustservercertificate = true; MultipleActiveResultSets=true ");
+        //    //enable lazy loading
+        //    optionsBuilder.UseLazyLoadingProxies();
+        //    ////other options
+        //    //optionsBuilder.LogTo(log=>Debug.WriteLine(log));
 
-            base.OnConfiguring(optionsBuilder);
-        }
+        //    base.OnConfiguring(optionsBuilder);
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
