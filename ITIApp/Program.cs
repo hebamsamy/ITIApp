@@ -18,6 +18,7 @@ namespace ITIApp
                 .UseSqlServer(builder.Configuration.GetConnectionString("projectDb"));
             }
           );
+
             builder.Services.AddScoped<BookManager>();
             builder.Services.AddScoped<PuplisherManager>();
             builder.Services.AddScoped<SubjectManager>();

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Models;
+
 using ViewModel;
 
 namespace ITIApp.Controllers
@@ -40,7 +41,7 @@ namespace ITIApp.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            Book book = bookManager.GetOne(id);
+            AddBookViewModel book = bookManager.GetOne(id).ToAddViewModel();
 
             ViewData["Subjects"] = subjectManager.GetAll()
                 .Select(s => new SelectListItem(s.Name, s.ID.ToString())).ToList();
@@ -48,6 +49,60 @@ namespace ITIApp.Controllers
                 .Select(s => new SelectListItem(s.Name, s.ID.ToString())).ToList();
             return View(book);//ERRRRROR
         }
+        [HttpPost]
+        public IActionResult Edit(AddBookViewModel data)
+        {
+
+            if (ModelState.IsValid)
+            {
+                //data valid
+                //keep old images or not
+
+                if(data.KeepOldImages == false)
+                {
+                    foreach (string item in data.ImagePaths)
+                    {
+                        string oldpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", item);
+                        System.IO.File.Delete(oldpath);
+                        //ToDo :File Not Deleted
+                    }
+                }
+
+                data.ImagePaths = new List<string>();
+                foreach (IFormFile file in data.Images)
+                {
+                    string fileName = DateTime.Now.ToFileTime().ToString() + file.FileName;
+                    string path = Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "wwwroot",
+                        "Images",
+                        "Books", fileName
+                        );
+                    FileStream fileStream = new FileStream(path, FileMode.Create);
+                    file.CopyTo(fileStream);
+                    fileStream.Close();
+
+                    data.ImagePaths.Add(Path.Combine("Images", "Books", fileName));
+                }
+
+
+                bookManager.Update(data);
+
+                //return to list(index)
+                return RedirectToAction("index");
+            }
+            else
+            {
+                //data not valid
+                //return to the same page with validation
+                ViewData["Subjects"] = subjectManager.GetAll()
+                .Select(s => new SelectListItem(s.Name, s.ID.ToString())).ToList();
+                ViewData["Publishers"] = puplisherManager.GetAll()
+                    .Select(s => new SelectListItem(s.Name, s.ID.ToString())).ToList();
+                return View(data);
+            }
+        }
+
         [HttpGet]
         public IActionResult Add()
         {
@@ -65,18 +120,25 @@ namespace ITIApp.Controllers
             {
                 //data valid
                 //add
-                bookManager.Add(new Book
+                
+                foreach (IFormFile file in data.Images)
                 {
-                    Isbn = data.Isbn,
-                    Title = data.Title,
-                    SubjectId = data.SubjectId,
-                    Summary = data.Summary,
-                    Price = data.Price,
-                    PublicationDate = data.PublicationDate,
-                    PublisherId = data.PublisherId,
-                    PageCount = data.PageCount,
-                    Notes = data.Notes,
-                });
+                    string fileName = DateTime.Now.ToFileTime().ToString() + file.FileName;
+                    string path = Path.Combine(
+                        Directory.GetCurrentDirectory() ,
+                        "wwwroot",  
+                        "Images" , 
+                        "Books" ,  fileName
+                        );
+                    FileStream fileStream = new FileStream(path, FileMode.Create);
+                    file.CopyTo(fileStream);
+                    fileStream.Close();
+
+                    data.ImagePaths.Add(Path.Combine("Images","Books", fileName));
+                }
+
+                
+                bookManager.Add(data.ToModel());
               
                 //return to list(index)
                 return RedirectToAction("index");

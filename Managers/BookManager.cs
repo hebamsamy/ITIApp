@@ -12,14 +12,18 @@ namespace Managers
 {
     public class BookManager :MainManager<Book>
     {
+
+        private ProjectContext Context;
         public BookManager(ProjectContext context) : base(context)
         {
+            Context = context;
         }
 
         public Book GetOne(int id)
         {
             return base.GetAll().Where(b=>b.ID == id).FirstOrDefault();
         }
+
         public List<BookViewModel> Get(string searchText, decimal price, string columnName = "Id", bool IsAscending = false,
             int PageSize = 5, int PageNumber = 1)
         {
@@ -42,6 +46,20 @@ namespace Managers
             }
             var quary = base.Filter(builder,columnName,IsAscending,PageSize,PageNumber);
             return quary.Select(b=> b.ToViewModel()).ToList();
+        }
+    
+        public void Update(AddBookViewModel model)
+        {
+            var oldData= GetOne(model.ID!.Value);
+
+            if(model.KeepOldImages == false)
+            {
+                oldData.Attachments.Clear(); 
+            }
+
+            var newData = model.ToEditModel(oldData);
+            base.Update(newData);
+
         }
     }
 }

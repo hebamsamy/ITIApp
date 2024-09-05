@@ -7,7 +7,7 @@
 
 <h1>Add New Book</h1>
 
-<form asp-action="add" asp-controller="book" method="post" enctype="multipart/form-data">
+<form asp-action="edit" asp-controller="book" method="post" enctype="multipart/form-data">
 
     <div class="mb-3">
         <label asp-for="Title"></label>
@@ -56,6 +56,21 @@
         <span asp-validation-for="SubjectId" class="text-danger"></span>
     </div>
 
+    <div>
+       <p>ReView Old Images</p>
+        <label asp-for="KeepOldImages"></label>
+        <input asp-for="KeepOldImages" class="form-Check" />
+    </div>
+    @if(Model.KeepOldImages == true)
+    {
+        <div>
+            @foreach(var item in Model.ImagePaths)
+            {
+                <img width="200px" height="200Px" src="/@item" /> 
+            }
+        </div>  
+    }
+    <input type="hidden" asp-for="ImagePaths" />
     <div class="mb-3">
         <label asp-for="Images"></label>
         <input asp-for="Images" class="form-control" multiple accept="image/*" />
@@ -64,3 +79,6 @@
 
     <button type="submit" class="btn btn-outline-primary">Send Data</button>
 </form>
+
+
+//JS

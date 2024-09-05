@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace ViewModel
 {
@@ -7,7 +8,7 @@ namespace ViewModel
         public int? ID { get; set; }
 
         [MaxLength(15)]
-        [Required(ErrorMessage ="Please provide this info!!")]
+        [Required(ErrorMessage = "Please provide this info!!")]
         public string Isbn { get; set; }
         [Required]
         public string Notes { get; set; }
@@ -26,14 +27,15 @@ namespace ViewModel
         [Required]
         public string Title { get; set; }
         [Required]
-        [Display(Name ="Choose Supject")]
+        [Display(Name = "Choose Supject")]
         public int SubjectId { get; set; }
         [Required]
         [Display(Name = "Choose Puplisher")]
         public int PublisherId { get; set; }
-            
-
-        //imgaes
-
+        [Display (Name ="Choose Book Images")]
+        [ImageLimit]
+        public IFormFileCollection Images { get; set; }
+        public List<string> ImagePaths { get; set; } = new List<string>();
+        public bool KeepOldImages { get; set; } = true;
     }
 }
