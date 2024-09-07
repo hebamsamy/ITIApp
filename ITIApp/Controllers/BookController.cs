@@ -55,19 +55,6 @@ namespace ITIApp.Controllers
 
             if (ModelState.IsValid)
             {
-                //data valid
-                //keep old images or not
-
-                if(data.KeepOldImages == false)
-                {
-                    foreach (string item in data.ImagePaths)
-                    {
-                        string oldpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", item);
-                        System.IO.File.Delete(oldpath);
-                        //ToDo :File Not Deleted
-                    }
-                }
-
                 data.ImagePaths = new List<string>();
                 foreach (IFormFile file in data.Images)
                 {
@@ -85,8 +72,19 @@ namespace ITIApp.Controllers
                     data.ImagePaths.Add(Path.Combine("Images", "Books", fileName));
                 }
 
+                List<string> oldImages = bookManager.GetOne(data.ID!.Value).Attachments.Select(b => b.Path).ToList();
 
                 bookManager.Update(data);
+
+                if (data.KeepOldImages == false)
+                {
+                    foreach (string item in oldImages)
+                    {
+                        string oldpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", item);
+                        System.IO.File.Delete(oldpath);
+                        //ToDo :File Not Deleted
+                    }
+                }
 
                 //return to list(index)
                 return RedirectToAction("index");
@@ -155,6 +153,13 @@ namespace ITIApp.Controllers
             }
         }
 
+       
+        public IActionResult Delete(int id)
+        {
+            bookManager.Delete(bookManager.GetOne(id));
+
+            return RedirectToAction("index");
+        }
 
     }
 }

@@ -56,21 +56,17 @@
         <span asp-validation-for="SubjectId" class="text-danger"></span>
     </div>
 
-    <div>
+    <div class="mb-3">
        <p>ReView Old Images</p>
         <label asp-for="KeepOldImages"></label>
-        <input asp-for="KeepOldImages" class="form-Check" />
+        <input asp-for="KeepOldImages" class="form-Check" id="keepOldImages" />
     </div>
-    @if(Model.KeepOldImages == true)
-    {
-        <div>
-            @foreach(var item in Model.ImagePaths)
-            {
-                <img width="200px" height="200Px" src="/@item" /> 
-            }
-        </div>  
-    }
-    <input type="hidden" asp-for="ImagePaths" />
+    <div class="mb-3" id="oldImagesContainer">
+        @foreach(var item in Model.ImagePaths)
+        {
+            <img width="200px" height="200Px" src="/@item" /> 
+        }
+    </div>  
     <div class="mb-3">
         <label asp-for="Images"></label>
         <input asp-for="Images" class="form-control" multiple accept="image/*" />
@@ -81,4 +77,15 @@
 </form>
 
 
-//JS
+@section Scripts{
+    <script>
+        let keepOldImages = document.getElementById("keepOldImages");
+        let oldImagesContainer = document.getElementById("oldImagesContainer");
+        keepOldImages.addEventListener("change", function (event) {
+            if (this.checked == true)
+                oldImagesContainer.style.display = "none";
+            else
+                oldImagesContainer.style.display = "block";
+        })
+    </script>
+}
