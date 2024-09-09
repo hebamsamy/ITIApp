@@ -1,0 +1,29 @@
+﻿@model BookViewModel
+
+<div class="card col-4">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Title</h5>
+        <p class="card-text">ISBN:  @Model.Isbn</p>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">Subject:  @Model.SubjectName</li>
+        <li class="list-group-item">Publisher: @Model.PublisherName</li>
+        <li class="list-group-item">Price: @Model.Price</li>
+    </ul>
+
+
+    <div class="card-body">
+        <a asp-controller="book"
+           asp-action="GetDetails"
+           asp-route-id="@Model.ID"
+           class="btn btn-info">See Detailes</a>
+        <a asp-controller="book"
+           asp-action="edit"
+           asp-route-id="@Model.ID"
+           class="btn btn-warning">Edit</a>
+        <a asp-controller="book"
+           asp-action="delete"
+           asp-route-id="@Model.ID"
+           class="btn btn-danger">Delete</a>
+    </div>
+</div>

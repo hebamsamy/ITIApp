@@ -33,7 +33,7 @@ namespace ViewModel
         [Display(Name = "Choose Puplisher")]
         public int PublisherId { get; set; }
         [Display (Name ="Choose Book Images")]
-        [ImageLimit]
+        [ImageLimit(Count = 2)]
         public IFormFileCollection Images { get; set; }
         public List<string> ImagePaths { get; set; } = new List<string>();
         public bool KeepOldImages { get; set; } = true;

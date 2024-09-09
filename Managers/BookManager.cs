@@ -24,7 +24,9 @@ namespace Managers
             return base.GetAll().Where(b=>b.ID == id).FirstOrDefault();
         }
 
-        public List<BookViewModel> Get(string searchText, decimal price, string columnName = "Id", bool IsAscending = false,
+        public Pagination<List<BookViewModel>> Get(
+            string searchText, decimal price, int SubjectId = 0, int publisherId = 0,
+            string columnName = "Id", bool IsAscending = false,
             int PageSize = 5, int PageNumber = 1)
         {
             var builder = PredicateBuilder.New<Book>();
@@ -33,19 +35,37 @@ namespace Managers
 
             if (!string.IsNullOrEmpty(searchText))
             {
-                builder = builder.Or(b => b.Title.Contains(searchText) );
+                builder = builder.Or(b => b.Title.Contains(searchText) || b.Notes.Contains(searchText) || b.Summary.Contains(searchText));
             }
             if(price > 0)
             {
                 builder = builder.Or(b=>b.Price <= price);
             }
-
+            if (SubjectId > 0)
+            {
+                builder = builder.Or(b => b.SubjectId == SubjectId);
+            }
+            if (publisherId > 0)
+            {
+                builder = builder.Or(b => b.PublisherId == publisherId);
+            }
             if (old == builder)
             {
                 builder = null;
             }
+           
+            int total = (builder==null) ? 
+                base.GetAll().Count() : 
+                base.GetAll().Where(builder).Count();
+
             var quary = base.Filter(builder,columnName,IsAscending,PageSize,PageNumber);
-            return quary.Select(b=> b.ToViewModel()).ToList();
+            
+            return new Pagination<List<BookViewModel>> {
+                PageNumber = PageNumber,
+                PageSize = PageSize,
+                TotalCount = total,
+                Data = quary.Select(b=> b.ToViewModel()).ToList()
+            };
         }
     
         public void Update(AddBookViewModel model)

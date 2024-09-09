@@ -21,14 +21,23 @@ namespace ITIApp.Controllers
         }
 
         public IActionResult Index(
-            string searchText, decimal price, 
+            string searchText, decimal price, int subjectId = 0, int publisherId = 0,
             string columnName = "Id", bool IsAscending = false,
-            int PageSize = 5, int PageNumber = 1)
+            int PageSize = 6, int PageNumber = 1)
         {
             //call database
-            List<BookViewModel> list = bookManager.Get(searchText,price,columnName,IsAscending, PageSize, PageNumber);
+            Pagination<List<BookViewModel>>list = bookManager.Get(searchText,price,subjectId,publisherId,columnName,IsAscending, PageSize, PageNumber);
             //pass data to ui
-            
+            ViewData["Subjects"] = subjectManager.GetAll()
+                .Select(s => new SelectListItem(s.Name, s.ID.ToString(),s.ID==subjectId)).ToList();
+            ViewData["Publishers"] = puplisherManager.GetAll()
+                .Select(s => new SelectListItem(s.Name, s.ID.ToString(),s.ID == publisherId)).ToList();
+           
+            ViewData["price"] = price;
+            ViewData["searchText"] = searchText;
+            ViewData["publisherId"] = publisherId;
+            ViewData["subjectId"] = subjectId;
+
             return View("booklist",list);
         }
 
@@ -72,7 +81,9 @@ namespace ITIApp.Controllers
                     data.ImagePaths.Add(Path.Combine("Images", "Books", fileName));
                 }
 
-                List<string> oldImages = bookManager.GetOne(data.ID!.Value).Attachments.Select(b => b.Path).ToList();
+                List<string> oldImages =
+                    bookManager.GetOne(data.ID!.Value)
+                    .Attachments.Select(b => b.Path).ToList();
 
                 bookManager.Update(data);
 

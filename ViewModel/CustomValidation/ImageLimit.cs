@@ -10,15 +10,17 @@ namespace ViewModel
 {
     public class ImageLimit : ValidationAttribute
     {
+        public int Count { get; set; }
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
+
             IFormFileCollection formFiles = value as IFormFileCollection;
             if (formFiles == null) {
                 return new ValidationResult("Please Select Images");
             }
-            if (formFiles.Count < 3)
+            if (formFiles.Count < Count)
             {
-                return new ValidationResult("Please Select THREE Images");
+                return new ValidationResult($"Please Select {Count} Images");
             }
             else {
                return ValidationResult.Success;
