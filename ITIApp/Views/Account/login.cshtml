@@ -1,20 +1,37 @@
 ﻿@{
     Layout = "_Layout";
 }
-
+@model UserLoginViewModel
 <h1>
         Welcome Back 
 </h1>
 
-<form class="">
-    <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-    </div>
-    <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label">Password</label>
-        <input class="form-control" id="exampleFormControlTextarea1" type="password">
-    </div>
+<form asp-action="Login" asp-controller="Account" method="post">
 
-    <a asp-action="index" asp-controller="Home" >Back To Home</a>
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="UserName" class="form-label"></label>
+        <input asp-for="UserName" class="form-control">
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+   @*   <div class="mb-3">
+         <label asp-for="Email" class="form-label"></label>
+         <input asp-for="Email" class="form-control">
+         <span asp-validation-for="Email" class="text-danger"></span>
+     </div> *@
+  
+    <div class="mb-3">
+        <label asp-for="Password" class="form-label"></label>
+        <input asp-for="Password" class="form-control">
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="RemeberMe" class="form-label"></label>
+        <input asp-for="RemeberMe" class="form-check">
+    </div>
+    <div class="d-flex justify-content-between align-items-center">
+        <button type="submit" class="btn btn-primary">LogIn</button>
+        <a class="nav-link" asp-action="register" asp-controller="account">Create Account !!!</a>
+    </div>
 </form>

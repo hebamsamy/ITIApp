@@ -63,7 +63,7 @@ namespace ViewModel
                 SubjectId = book.SubjectId,
                 SubjectName = book.Subject.Name,
                 PublisherId = book.PublisherId,
-                PublisherName = book.Publisher.Name,
+                PublisherName = $"{book.Publisher.User.FirstName} {book.Publisher.User.LastName}" ,
                 PublicationDate = book.PublicationDate,
                 PageCount = book.PageCount,
                 Isbn = book.Isbn,
@@ -71,7 +71,7 @@ namespace ViewModel
                 Price = book.Price,
                 Summary = book.Summary,
                 Attachments = book.Attachments.Select(i => i.Path).ToList(),
-                Authers = book.Authers.Select(i => i.Author.Name).ToList(),
+                Authers = book.Authers.Select(i => $"{i.Author.User.FirstName} {i.Author.User.LastName}").ToList(),
             };
         }
 

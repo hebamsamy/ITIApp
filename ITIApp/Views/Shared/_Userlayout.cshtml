@@ -26,12 +26,28 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
+                    @if( User.Identity!.Name != null ){
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="book" asp-action="index">Books</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="book" asp-action="add">Add Book</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="book" asp-action="add">Add Book</a>
                         </li>
+                        <li class="nav-item">
+                            <span class="text-black">Welcome  @User.Identity.Name</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="account" asp-action="logout">LogOut</a>
+                        </li>
+                        }
+                        else
+                        {
+                            
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="account" asp-action="register">Join US</a>
+                            </li>
+                        }
+
                 </ul>
             </div>
         </div>

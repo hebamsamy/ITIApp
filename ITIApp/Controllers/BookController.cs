@@ -1,4 +1,5 @@
 ﻿using Managers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Models;
@@ -7,6 +8,7 @@ using ViewModel;
 
 namespace ITIApp.Controllers
 {
+    [Authorize]
     public class BookController : Controller
     {
         
@@ -31,7 +33,7 @@ namespace ITIApp.Controllers
             ViewData["Subjects"] = subjectManager.GetAll()
                 .Select(s => new SelectListItem(s.Name, s.ID.ToString(),s.ID==subjectId)).ToList();
             ViewData["Publishers"] = puplisherManager.GetAll()
-                .Select(s => new SelectListItem(s.Name, s.ID.ToString(),s.ID == publisherId)).ToList();
+                .Select(s => new SelectListItem($"{s.User.FirstName} {s.User.LastName}", s.ID.ToString(),s.ID == publisherId)).ToList();
            
             ViewData["price"] = price;
             ViewData["searchText"] = searchText;
@@ -55,7 +57,7 @@ namespace ITIApp.Controllers
             ViewData["Subjects"] = subjectManager.GetAll()
                 .Select(s => new SelectListItem(s.Name, s.ID.ToString())).ToList();
             ViewData["Publishers"] = puplisherManager.GetAll()
-                .Select(s => new SelectListItem(s.Name, s.ID.ToString())).ToList();
+                .Select(s => new SelectListItem($"{s.User.FirstName} {s.User.LastName}", s.ID.ToString())).ToList();
             return View(book);//ERRRRROR
         }
         [HttpPost]
@@ -107,7 +109,7 @@ namespace ITIApp.Controllers
                 ViewData["Subjects"] = subjectManager.GetAll()
                 .Select(s => new SelectListItem(s.Name, s.ID.ToString())).ToList();
                 ViewData["Publishers"] = puplisherManager.GetAll()
-                    .Select(s => new SelectListItem(s.Name, s.ID.ToString())).ToList();
+                    .Select(s => new SelectListItem($"{s.User.FirstName} {s.User.LastName}", s.ID.ToString())).ToList();
                 return View(data);
             }
         }
@@ -118,7 +120,7 @@ namespace ITIApp.Controllers
             ViewData["Subjects"] = subjectManager.GetAll()
                 .Select(s => new SelectListItem(s.Name, s.ID.ToString())).ToList();
             ViewData["Publishers"] = puplisherManager.GetAll()
-                .Select(s => new SelectListItem(s.Name, s.ID.ToString())).ToList();
+                .Select(s => new SelectListItem($"{s.User.FirstName} {s.User.LastName}", s.ID.ToString())).ToList();
             return View();
         }
 
@@ -159,7 +161,7 @@ namespace ITIApp.Controllers
                 ViewData["Subjects"] = subjectManager.GetAll()
                 .Select(s => new SelectListItem(s.Name, s.ID.ToString())).ToList();
                 ViewData["Publishers"] = puplisherManager.GetAll()
-                    .Select(s => new SelectListItem(s.Name, s.ID.ToString())).ToList();
+                    .Select(s => new SelectListItem($"{s.User.FirstName} {s.User.LastName}", s.ID.ToString())).ToList();
                 return View(data);
             }
         }

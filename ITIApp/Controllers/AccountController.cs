@@ -1,25 +1,72 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Managers;
+using Microsoft.AspNetCore.Mvc;
+using ViewModel;
 
 namespace ITIApp
 {
     public class AccountController : Controller
     {
-        //public IActionResult Welcome()
-        //{
-        //    var contect = new ContentResult();
-        //    contect.Content = "Welcome to My Site";
-        //    return  contect ;
-        //}
+        private AccountManager accountManager;
+        public AccountController(AccountManager _accountManager) { 
+            this.accountManager = _accountManager;
+        }
 
-        //public IActionResult Welcome2()
-        //{
-        //    return new JsonResult(new{  id = 1, name ="ITI"});
-        //}
-
-        public IActionResult login()
+        [HttpGet]
+        public IActionResult Register()
         {
-            //in folder Views / is there File Login.cshtml 
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Register(UserRegisterViewModel viewModel)
+        {
+            if (ModelState.IsValid) { 
+                var result =  await accountManager.Register(viewModel);
+                if (result.Succeeded) { 
+                    return RedirectToAction("Login","Account");
+                }
+                else
+                {
+                    foreach (var item in result.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);   
+                    }
+                    return View(viewModel);
+                }
+            }
+            else
+            {
+                return View(viewModel);
+            }
+        }
+        [HttpGet]
+        public IActionResult LogIn()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> LogIn(UserLoginViewModel viewModel) {
+            if (ModelState.IsValid) {
+                var result = await accountManager.Login(viewModel);
+                if (result.Succeeded)
+                {
+                    ///Ues Return URL
+                    return RedirectToAction("index", "book");
+                }
+                else {
+                    //if (result.IsNotAllowed|| result.IsLockedOut)
+                    ModelState.AddModelError("", "Sorry Your Account Is under Review , Try Later!!!");
+                    return View(viewModel);
+                }
+            }
+            else { 
+                return View(viewModel);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult LogOut() {
+            accountManager.SignOut();
+            return RedirectToAction("index", "home");
         }
     }
 }
