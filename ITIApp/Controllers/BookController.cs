@@ -8,8 +8,7 @@ using ViewModel;
 
 namespace ITIApp.Controllers
 {
-    [Authorize]
-    public class BookController : Controller
+      public class BookController : Controller
     {
         
         BookManager bookManager;
@@ -22,6 +21,7 @@ namespace ITIApp.Controllers
             this.subjectManager = subjectManager;
         }
 
+        [Authorize(Roles = "Admin,Publisher,Auther")]
         public IActionResult Index(
             string searchText, decimal price, int subjectId = 0, int publisherId = 0,
             string columnName = "Id", bool IsAscending = false,
@@ -42,7 +42,7 @@ namespace ITIApp.Controllers
 
             return View("booklist",list);
         }
-
+        [Authorize]
         public IActionResult GetDetails(int id)
         {
             BookViewModel book = bookManager.GetOne(id).ToViewModel();
@@ -50,6 +50,7 @@ namespace ITIApp.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles ="Admin")]
         public IActionResult Edit(int id)
         {
             AddBookViewModel book = bookManager.GetOne(id).ToAddViewModel();
@@ -61,6 +62,7 @@ namespace ITIApp.Controllers
             return View(book);//ERRRRROR
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(AddBookViewModel data)
         {
 
@@ -115,6 +117,7 @@ namespace ITIApp.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Add()
         {
             ViewData["Subjects"] = subjectManager.GetAll()
@@ -125,6 +128,8 @@ namespace ITIApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+
         public IActionResult Add(AddBookViewModel data) {
 
             if (ModelState.IsValid)
@@ -166,7 +171,7 @@ namespace ITIApp.Controllers
             }
         }
 
-       
+        [Authorize(Roles ="Admin")]
         public IActionResult Delete(int id)
         {
             bookManager.Delete(bookManager.GetOne(id));

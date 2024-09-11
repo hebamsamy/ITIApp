@@ -1,0 +1,57 @@
+﻿@{
+    Layout = "_Layout";
+    var list = ViewData["list"] as List<RoleViewModel>;
+}
+@model RoleViewModel
+<h1>
+    Add Role To Website
+</h1>
+
+<form asp-action="add" asp-controller="role" method="post">
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="d-flex justify-content-between align-items-center">
+        <button type="submit" class="btn btn-primary">Create Role</button>
+    </div>
+</form>
+
+@if (ViewBag.Success == 1)
+{
+    <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Well done!</h4>
+        <p>you successfully Added New Role.</p>
+    </div>
+
+}
+else if (ViewBag.Success == 2)
+{
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Sorry!</h4>
+        <p>Try Later!!!!!!!!!.</p>
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in list)
+        {
+            <tr>
+                <th scope="row">@item.ID</th>
+                <td>@item.Name</td>
+            </tr>
+            
+        }
+</tbody>
+</table>

@@ -1,5 +1,7 @@
 ﻿using Managers;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ViewModel;
 
 namespace ITIApp
@@ -7,18 +9,27 @@ namespace ITIApp
     public class AccountController : Controller
     {
         private AccountManager accountManager;
-        public AccountController(AccountManager _accountManager) { 
+        private RoleManager roleManager;
+        public AccountController(AccountManager _accountManager,RoleManager _roleManager ) { 
             this.accountManager = _accountManager;
+            roleManager = _roleManager;
         }
 
         [HttpGet]
         public IActionResult Register()
         {
+            ViewData["list"]  = roleManager.GetAll()
+                .Where(r => r.Name != "Admin")
+                .Select(r => new SelectListItem(r.Name, r.Name)).ToList();
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> Register(UserRegisterViewModel viewModel)
         {
+            ViewData["list"] = roleManager.GetAll()
+                .Where(r => r.Name != "Admin")
+                .Select(r => new SelectListItem(r.Name, r.Name)).ToList();
+           
             if (ModelState.IsValid) { 
                 var result =  await accountManager.Register(viewModel);
                 if (result.Succeeded) { 
@@ -39,9 +50,10 @@ namespace ITIApp
             }
         }
         [HttpGet]
-        public IActionResult LogIn()
+        public IActionResult LogIn(string ReturnUrl = "/")
         {
-            return View();
+            UserLoginViewModel model = new UserLoginViewModel { ReturnUrl = ReturnUrl };
+            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> LogIn(UserLoginViewModel viewModel) {
@@ -49,12 +61,23 @@ namespace ITIApp
                 var result = await accountManager.Login(viewModel);
                 if (result.Succeeded)
                 {
-                    ///Ues Return URL
-                    return RedirectToAction("index", "book");
+                    if(viewModel.ReturnUrl != "/")
+                    {
+                        return Redirect(viewModel.ReturnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("index", "Book");
+                    }
+
                 }
-                else {
-                    //if (result.IsNotAllowed|| result.IsLockedOut)
+                else if(result.IsLockedOut){
                     ModelState.AddModelError("", "Sorry Your Account Is under Review , Try Later!!!");
+                    return View(viewModel);
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Sorry Your Cridentionals is in valid Try Again!!!");
                     return View(viewModel);
                 }
             }
@@ -68,5 +91,11 @@ namespace ITIApp
             accountManager.SignOut();
             return RedirectToAction("index", "home");
         }
+
+
+
+
+
+        //private 
     }
 }

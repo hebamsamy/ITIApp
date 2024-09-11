@@ -23,12 +23,31 @@ namespace Managers
 
         public async Task<IdentityResult> Register(UserRegisterViewModel viewModel )
         {
-           return  await userManager.CreateAsync(viewModel.ToModel(), viewModel.Password);
+            User user = viewModel.ToModel();
+           var result =  await userManager.CreateAsync( user , viewModel.Password);
+            result =  await userManager.AddToRoleAsync(user, viewModel.Role);
+            return result;
         }
 
         public async Task<SignInResult> Login(UserLoginViewModel viewModel) {
-            return await  signInManager.PasswordSignInAsync(
-                 viewModel.UserName, viewModel.Password,viewModel.RemeberMe,true); 
+
+            //is value in (viewModel.LoginMethod) EMAIL OR UserName
+            //aly_ahmed
+            //alyahmed@iti.gov.eg
+            var user = await
+                userManager.FindByEmailAsync(viewModel.LoginMethod);
+
+            if (user == null)
+            {
+                user = await userManager.FindByNameAsync(viewModel.LoginMethod);
+                if (user == null)
+                {
+                    return SignInResult.Failed;
+                }
+            }
+            
+            
+            return await  signInManager.PasswordSignInAsync(user, viewModel.Password,viewModel.RemeberMe,true); 
             
         }
          public async void SignOut()

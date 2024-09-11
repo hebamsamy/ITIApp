@@ -31,11 +31,15 @@ namespace ITIApp
                 i.Password.RequireUppercase = false;
                 i.Password.RequireLowercase = false;
                 i.Password.RequireNonAlphanumeric = false;
+
+                i.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+                i.Lockout.MaxFailedAccessAttempts = 2;
             });
             builder.Services.AddScoped<AccountManager>();
             builder.Services.AddScoped<BookManager>();
             builder.Services.AddScoped<PuplisherManager>();
             builder.Services.AddScoped<SubjectManager>(); 
+            builder.Services.AddScoped<RoleManager>();
             #endregion
 
 
@@ -48,8 +52,9 @@ namespace ITIApp
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",

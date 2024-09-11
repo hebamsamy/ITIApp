@@ -1,5 +1,6 @@
 ﻿@{
     Layout = null;
+    List<SelectListItem> list = ViewData["list"] as List<SelectListItem>;
 }
 @model UserRegisterViewModel
 <!Doctype html>
@@ -52,6 +53,13 @@
                     <input asp-for="ConfirmPassword" class="form-control">
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Role" class="form-label"></label>
+                <select asp-for="Role" class="form-control" asp-items="list">
+                    <option selected>Choose One Role .... </option>
+                </select>
+                <span asp-validation-for="Role" class="text-danger"></span>
             </div>
             <div class="d-flex justify-content-between align-items-center">
                 <button type="submit" class="btn btn-primary">Register</button>
