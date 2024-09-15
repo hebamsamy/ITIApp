@@ -26,6 +26,7 @@ namespace Managers
             User user = viewModel.ToModel();
            var result =  await userManager.CreateAsync( user , viewModel.Password);
             result =  await userManager.AddToRoleAsync(user, viewModel.Role);
+            //based ion role Add TO Table (Publicher or Auther)
             return result;
         }
 
@@ -54,5 +55,40 @@ namespace Managers
          {
             await signInManager.SignOutAsync();
          } 
+        public async Task<IdentityResult> ChangePassword(UserChangePassword viewModel)
+        {
+            var User = await userManager.FindByIdAsync(viewModel.UserID);
+
+            return await userManager.ChangePasswordAsync(User, viewModel.CurrentPassword, viewModel.NewPassword);
+        }
+        public async Task<string> GetResetPasswordCode(string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return string.Empty;
+            }
+            else
+            {
+                return await userManager.GeneratePasswordResetTokenAsync(user);
+            }
+        }
+
+        public async Task<IdentityResult> ResetPassword(UserResetPasswordViewModel viewModel )
+        {
+            var user = await userManager.FindByEmailAsync(viewModel.Email);
+            if (user != null)
+            {
+                return await userManager.ResetPasswordAsync
+                     (user, viewModel.Code, viewModel.NewPassword);
+            }
+            else {
+                return IdentityResult.Failed(
+                    new IdentityError()
+                    {
+                        Description = "Sorry In valid Operation !!!"
+                    });
+            }
+        }
     }
 }

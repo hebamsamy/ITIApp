@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Models;
-
+using System.Security.Claims;
 using ViewModel;
 
 namespace ITIApp.Controllers
@@ -27,6 +27,14 @@ namespace ITIApp.Controllers
             string columnName = "Id", bool IsAscending = false,
             int PageSize = 6, int PageNumber = 1)
         {
+
+            string UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!string.IsNullOrEmpty(UserID))
+            {
+                publisherId = puplisherManager.GetAll().Where(p => p.UserId == UserID).FirstOrDefault()!.ID;
+            }
+
             //call database
             Pagination<List<BookViewModel>>list = bookManager.Get(searchText,price,subjectId,publisherId,columnName,IsAscending, PageSize, PageNumber);
             //pass data to ui

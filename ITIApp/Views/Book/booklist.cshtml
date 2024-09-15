@@ -29,12 +29,13 @@
               @* <option selected value="0">Choose Subject ...</option> *@
      </select>
    </div>
-   <div class="col-md-6">
-     <label for="validationCustom04" class="form-label">Publisher</label>
-         <select class="form-select" name="publisherId" asp-items="@Publishers">
-             @* <option selected value="0">Choose Publisher...</option> *@
-     </select>
-   </div>
+   @if(User.HasClaim(i=> i.Type == ClaimTypes.Role && i.Value != "Publisher")){
+       <div class="col-md-6">
+         <label for="validationCustom04" class="form-label">Publisher</label>
+             <select class="form-select" name="publisherId" asp-items="@Publishers">
+         </select>
+       </div>
+   }
      <input type="hidden" name="PageNumber" />
    <div class="col-12">
      <button class="btn btn-primary" type="submit">Filter</button>

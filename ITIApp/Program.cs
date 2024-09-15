@@ -23,9 +23,11 @@ namespace ITIApp
             });
 
             builder.Services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<ProjectContext>();
+                .AddEntityFrameworkStores<ProjectContext>()
+                .AddDefaultTokenProviders() ;
             builder.Services.Configure<IdentityOptions>(i =>
             {
+                i.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
                 
                 i.User.RequireUniqueEmail = true;
                 i.Password.RequireUppercase = false;
@@ -34,7 +36,11 @@ namespace ITIApp
 
                 i.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
                 i.Lockout.MaxFailedAccessAttempts = 2;
+
             });
+
+            builder.Services.AddScoped<IUserClaimsPrincipalFactory<User> , UserCustomClaims>();
+
             builder.Services.AddScoped<AccountManager>();
             builder.Services.AddScoped<BookManager>();
             builder.Services.AddScoped<PuplisherManager>();
