@@ -14,7 +14,10 @@ namespace ITIApp
 
 
             #region Configration and DI
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews(i =>
+            {
+                i.Filters.Add<GenaralExceptionHandler>();
+            });
 
             builder.Services.AddDbContext<ProjectContext>(i =>
             {

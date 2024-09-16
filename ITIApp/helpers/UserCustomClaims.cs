@@ -20,7 +20,7 @@ namespace ITIApp
             if (user != null)
             {
                 //claims.AddClaim(new Claim("phoneNumber", user.PhoneNumber));
-                claims.AddClaim(new Claim("pictue", user.Picture));
+                claims.AddClaim(new Claim(ClaimTypes.Actor, user.Picture ?? "Images/Books/133700016116305664mountains.jpg"));
                 claims.AddClaim(new Claim("fullName", $"{user.FirstName} {user.LastName}"));
             }
 

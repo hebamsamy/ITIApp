@@ -28,11 +28,14 @@ namespace ITIApp.Controllers
             int PageSize = 6, int PageNumber = 1)
         {
 
-            string UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (!string.IsNullOrEmpty(UserID))
+            if( User.HasClaim(i=>i.Type ==ClaimTypes.Role && i.Value == "Publisher"))
             {
-                publisherId = puplisherManager.GetAll().Where(p => p.UserId == UserID).FirstOrDefault()!.ID;
+                string UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (!string.IsNullOrEmpty(UserID))
+                {
+                    publisherId = puplisherManager.GetAll().Where(p => p.UserId == UserID).FirstOrDefault()!.ID;
+                }
             }
 
             //call database
@@ -180,6 +183,7 @@ namespace ITIApp.Controllers
         }
 
         [Authorize(Roles ="Admin")]
+        [AuditBookDeletion (Order = 1)]
         public IActionResult Delete(int id)
         {
             bookManager.Delete(bookManager.GetOne(id));

@@ -11,6 +11,7 @@ using RestSharp;
 
 namespace ITIApp
 {
+    
     public class AccountController : Controller
     {
         private AccountManager accountManager;
@@ -142,7 +143,8 @@ namespace ITIApp
             }
             else
             {
-                MailHelper mail = new MailHelper(email, "Check Your Verification Code", $"Your Code is {code}");
+                MailHelper mail = new MailHelper
+                    (email, "Check Your Verification Code", $"Your Code is {code}");
                 mail.Send();
                 return View(new UserResetPasswordViewModel() { Email = email});
             }
