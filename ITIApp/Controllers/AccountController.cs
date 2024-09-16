@@ -142,24 +142,8 @@ namespace ITIApp
             }
             else
             {
-                var client = new SmtpClient("sandbox.smtp.mailtrap.io", 25)
-                {
-                    Credentials = new NetworkCredential
-                    ("6d2456ad82c2ca", "b1101effba9f2b"),
-                    EnableSsl = true
-                };
-                client.Send("mailtrap@example.com", email,"Check Your Verification Code", $"Your Code is {code}");
-
-                //var client = new RestClient("https://sandbox.api.mailtrap.io/api/send/3138917");
-                //var request = new RestRequest();
-                //request.AddHeader("Authorization", "Bearer a5f7f5d77da4c8df5d962a21d87a627b");
-                //request.AddHeader("Content-Type", "application/json");
-                //request.AddParameter(
-                //    "application/json",
-                //    $@"from: {{email: mailtrap@example.com ,name: Mailtrap Test}}, to:[{{email:h.mohammed.samy@gmail.com}}],subject:Check Your Verification Code,text: {code}",
-                //    ParameterType.RequestBody);
-                //var response = client.Post(request);
-
+                MailHelper mail = new MailHelper(email, "Check Your Verification Code", $"Your Code is {code}");
+                mail.Send();
                 return View(new UserResetPasswordViewModel() { Email = email});
             }
         }
